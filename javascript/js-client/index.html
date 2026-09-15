@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+<meta name="description" content="Level up and gain score by shooting at other players and bosses while keeping yourself alive!">
+<title>arras.io</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700">
+<link rel="stylesheet" href="./style.css"/>
+<link rel="icon" type="image/svg+xml" href="https://arras.io/favicon/base.svg">
+</head>
+<body oncontextmenu="return false">
+<div id="gameAreaWrapper" style="display: none;">
+    <canvas id="gameCanvas" tabindex="1"></canvas>
+</div>
+<div class="mainWrapper" id="mainWrapper">
+    <div id="startMenuWrapper">
+        <div id="menuTabs" class="menuTabs" style="text-align: center;"></div>
+        <div class="startMenu">
+            <div class="startMenuHolder linkHolder">
+                <div class="bottomHolder">
+                    <a style="width: 40px; background: #7289da;" href="https://discord.gg/arras" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20.317 4.369a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                    </a>
+                    <a style="width: 204px; background: #00b0e0;" href="https://arras.io" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="12" fill="#8abc3f"/>
+                            <polyline points="12.45,7.65 16.05,4.05 19.95,7.95 16.35,11.55" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round" fill="none"/>
+                            <circle cx="10.5" cy="13.5" r="6" stroke="#ffffff" stroke-width="1.2" fill="none"/>
+                        </svg>
+                        <span class="text">arras.io</span>
+                    </a>
+                </div>
+            </div>
+            <div class="startMenuHolder mainHolder">
+                <div class="sliderHolder" id="sliderHolder">
+                    <div class="slider startMenuSlidingContent" id="mainContent">
+                        <div class="header">
+                            <a href="/" class="icon" tabindex="-1">
+                                <img src="https://arras.io/favicon/base.svg" alt="arras icon">
+                            </a>
+                            <h1>arras.io</h1>
+                        </div>
+                        <div>
+                            <div class="horizontalSelector" id="serverFilterRegion"></div>
+                            <div class="horizontalSelector" id="serverFilterMode"></div>
+                        </div>
+                        <div class="serverSelector shadowScroll">
+                            <table>
+                                <tbody id="serverSelectorBody"></tbody>
+                            </table>
+                        </div>
+                        <input type="text" autofocus tabindex="1" spellcheck="false" placeholder="This is the tale of" id="optName" maxlength="24">
+                    </div>
+
+                </div>
+                <div class="startButtonHolder">
+                    <button id="startButton" tabindex="2" disabled><b><span class="playText">Play</span></b></button>
+                </div>
+            </div>
+            <div class="startMenuHolder changelogHolder">
+                <div id="patchNotes" class="shadowScroll" style="padding: 12px;">
+                    <div class="optionsHeader">arras.io JS Client</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="chatBar"><input id="chatInput" maxlength="120" placeholder="Chat message..." autocomplete="off"></div>
+
+<div id="optionsArrow" class="options-arrow expanded">
+    <button class="options-arrow-btn" id="optionsArrowBtn">
+        <span class="arrow-icon">&#9654;</span>
+        <span class="arrow-label">Options</span>
+    </button>
+    <button class="options-arrow-btn" id="playersArrowBtn">
+        <span class="arrow-icon">&#9654;</span>
+        <span class="arrow-label">Players</span>
+    </button>
+</div>
+
+<div id="optionsPanel" class="options-panel" style="display: none;">
+    <div class="options-panel-header">
+        <button id="closeOptionsPanel" class="close-btn">&times;</button>
+        <div class="options-panel-tabs">
+            <span class="active" data-tab="panelTabOptions">Options</span>
+            <span data-tab="panelTabTheme">Theme</span>
+            <span data-tab="panelTabKeybinds">Keybinds</span>
+        </div>
+    </div>
+    <div id="panelTabOptions" class="options-panel-content">
+        <div class="optionsSection">Game Appearance</div>
+        <table>
+            <tr>
+                <td><div><label class="container"><input id="optRenderNames" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Player Names</label></div></td>
+                <td><div><label class="container"><input id="optChatMessages" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Chat Messages</label></div></td>
+            </tr>
+            <tr>
+                <td><div><label class="container"><input id="optRenderScores" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Player Scores</label></div></td>
+                <td><div><label class="container"><input id="optRenderHealth" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Health Bars</label></div></td>
+            </tr>
+            <tr>
+                <td><div><label class="container"><input id="optNoGrid" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Background Grid</label></div></td>
+                <td><div><label class="container"><input id="optSeparateShield" class="checkbox" type="checkbox"><span class="checkmark"></span>Separate Shield Bar</label></div></td>
+            </tr>
+            <tr>
+                <td><div><label class="container"><input id="optPointy" class="checkbox" type="checkbox"><span class="checkmark"></span>Sharp Traps</label></div></td>
+                <td><div><label class="container"><input id="optCurvyTraps" class="checkbox" type="checkbox"><span class="checkmark"></span>Curvy Traps</label></div></td>
+            </tr>
+            <tr>
+                <td><div><label class="container"><input id="optSharpPolygons" class="checkbox" type="checkbox"><span class="checkmark"></span>Sharp Polygons</label></div></td>
+                <td><div><label class="container"><input id="optTankSkins" class="checkbox" type="checkbox"><span class="checkmark"></span>Tank Skins</label></div></td>
+            </tr>
+        </table>
+        <div class="optionsSection">UI Elements</div>
+        <table>
+            <tr>
+                <td><div><label class="container"><input id="optRenderGui" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Upgrades</label></div></td>
+                <td><div><label class="container"><input id="optRenderLeaderboard" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Leaderboard</label></div></td>
+            </tr>
+            <tr>
+                <td><div><label class="container"><input id="optPlayerBars" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Player Bars</label></div></td>
+                <td><div><label class="container"><input id="optRenderMinimap" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Minimap</label></div></td>
+            </tr>
+            <tr>
+                <td><div><label class="container"><input id="optKillBar" class="checkbox" type="checkbox"><span class="checkmark"></span>Kill Bar</label></div></td>
+                <td><div><label class="container"><input id="optExtraInfo" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Extra Info</label></div></td>
+            </tr>
+        </table>
+        <div class="optionsSection">Extra</div>
+        <table>
+            <tr>
+                <td colspan="2">
+                    <select id="optChatFilter">
+                        <option value="regular">Regular</option>
+                        <option value="offense">Filter Offensive Words Only</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><div><label class="container"><input id="smoothCamera" class="checkbox" type="checkbox"><span class="checkmark"></span>Smooth Camera</label></div></td>
+                <td><div><label class="container"><input id="optFading" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Fading Animation</label></div></td>
+            </tr>
+            <tr>
+                <td><div><label class="container"><input id="autoLevelUp" class="checkbox" type="checkbox" checked><span class="checkmark"></span>Auto-Level Up</label></div></td>
+                <td><div><label class="container"><input id="optIncognito" class="checkbox" type="checkbox"><span class="checkmark"></span>Incognito Mode</label></div></td>
+            </tr>
+            <tr>
+                <td><div><label class="container"><input id="optUnscaledSpawn" class="checkbox" type="checkbox"><span class="checkmark"></span>Unscaled Old Spawn Panel</label></div></td>
+            </tr>
+        </table>
+        <div class="optionsSection">Performance</div>
+        <table>
+            <tr>
+                <td>
+                    <select id="optPerformance">
+                        <option value="auto">Auto (Recommended)</option>
+                        <option value="high">High</option>
+                        <option value="low">Low</option>
+                    </select>
+                </td>
+                <td><div><label class="container"><input id="optLowResolution" class="checkbox" type="checkbox"><span class="checkmark"></span>Low Resolution</label></div></td>
+            </tr>
+        </table>
+    </div>
+    <div id="panelTabTheme" class="options-panel-content" style="display: none;">
+        <div class="optionsSection">Theme</div>
+        <table>
+            <tr>
+                <td colspan="2"><select id="optThemeName" style="width: 100%;">
+                    <option value="normal">Normal</option>
+                    <option value="dark">Dark</option>
+                    <option value="classic">Classic</option>
+                    <option value="classicDark">Classic Dark</option>
+                    <option value="natural">Natural</option>
+                    <option value="discord">Discord</option>
+                    <option value="midnight">Midnight</option>
+                    <option value="solarizedDark">Solarized Dark</option>
+                    <option value="retro">Retro</option>
+                    <option value="snow">Snow</option>
+                    <option value="navigator">Navigator</option>
+                    <option value="coralReef">Coral Reef</option>
+                    <option value="gruvbox">Gruvbox</option>
+                    <option value="eggplant">Eggplant</option>
+                    <option value="wrSheetTheme">WR Sheet</option>
+                    <option value="lyric">Lyric</option>
+                    <option value="bleach">Bleach</option>
+                    <option value="nebula">Nebula</option>
+                    <option value="forest">Forest</option>
+                    <option value="pastel">Pastel</option>
+                    <option value="descent">Descent</option>
+                    <option value="badlands">Badlands</option>
+                    <option value="pumpkinSkeleton">Pumpkin Skeleton</option>
+                    <option value="blindness">Blindness</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="text" id="optThemeCode" placeholder="Paste theme code (arras/...)..." style="width: 100%;"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><div id="optThemeStatus" style="font-size: 11px; color: #aaa; padding: 2px 0;"></div></td>
+            </tr>
+        </table>
+        <div class="optionsSection">Colors</div>
+        <div class="color-grid" id="themeColorGrid">
+            <div class="color-item"><span class="color-swatch" data-color="blue"></span>Blue</div>
+            <div class="color-item"><span class="color-swatch" data-color="vlgrey"></span>Eggs</div>
+            <div class="color-item"><span class="color-swatch" data-color="lgrey"></span>Walls</div>
+            <div class="color-item"><span class="color-swatch" data-color="green"></span>Green</div>
+            <div class="color-item"><span class="color-swatch" data-color="gold"></span>Squares</div>
+            <div class="color-item"><span class="color-swatch" data-color="lgreen"></span>Health Bars</div>
+            <div class="color-item"><span class="color-swatch" data-color="red"></span>Red</div>
+            <div class="color-item"><span class="color-swatch" data-color="orange"></span>Triangles</div>
+            <div class="color-item"><span class="color-swatch" data-color="teal"></span>Shield Bars</div>
+            <div class="color-item"><span class="color-swatch" data-color="magenta"></span>Purple</div>
+            <div class="color-item"><span class="color-swatch" data-color="purple"></span>Pentagons</div>
+            <div class="color-item"><span class="color-swatch" data-color="grey"></span>Barrels</div>
+            <div class="color-item"><span class="color-swatch" data-color="yellow"></span>Neutral</div>
+            <div class="color-item"><span class="color-swatch" data-color="aqua"></span>Hexagons</div>
+            <div class="color-item"><span class="color-swatch" data-color="white"></span>Background</div>
+            <div class="color-item"><span class="color-swatch" data-color="dgrey"></span>Rogues</div>
+            <div class="color-item"><span class="color-swatch" data-color="pink"></span>Crashers</div>
+            <div class="color-item"><span class="color-swatch" data-color="guiblack"></span>Grid</div>
+            <div class="color-item"><span class="color-swatch" data-color="guiwhite"></span>Text</div>
+            <div class="color-item"><span class="color-swatch" data-color="black"></span>Borders</div>
+        </div>
+        <div class="optionsSection">Borders</div>
+        <table>
+            <tr>
+                <td><div><label class="container"><input id="optNeonBorders" class="checkbox" type="checkbox"><span class="checkmark"></span>Neon Borders</label></div></td>
+            </tr>
+        </table>
+    </div>
+    <div id="panelTabKeybinds" class="options-panel-content" style="display: none;">
+        <div class="optionsSection">Keybinds <i id="resetControls" class="reset" title="Reset controls"></i></div>
+        <table class="controlTable" id="controlSettings">
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<div id="playersPanel" class="options-panel" style="display: none;">
+    <div class="options-panel-header">
+        <button id="closePlayersPanel" class="close-btn">&times;</button>
+        <div class="options-panel-tabs">
+            <span class="active">Players</span>
+        </div>
+    </div>
+    <div class="options-panel-content">
+        <div id="playersList" class="players-list"></div>
+    </div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

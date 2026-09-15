@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+node_modules/
+eval_dump.txt
+*.log
+.DS_Store
+.idea/
+.vscode/

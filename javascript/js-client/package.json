@@ -1,0 +1,10 @@
+{
+    "name": "arras-js-client",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "description": "Browser JS client for original arras.io servers (see docs/PLAN.md)",
+    "scripts": {
+        "test": "node tools/selftest.mjs"
+    }
+}

@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arras-research"
+version = "0.1.0"
+description = "Reverse-engineered arras.io protocol client and tools"
+readme = "README.md"
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["arras*"]
+
+[tool.setuptools.package-data]
+arras = ["data/*"]
