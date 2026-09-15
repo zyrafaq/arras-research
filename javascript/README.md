@@ -8,9 +8,10 @@ JS bits for arras.io.
 
 ## theme-codes/
 
-Browser-side reference for arras.io theme codes.
+Node CLI for converting arras.io theme codes.
 
-- `reference.js` — parsers/stringifiers for the theme formats.
+- `index.js` — CLI (`node index.js decode|convert|roundtrip`).
+- `theme.js` — parsers/stringifiers for the theme formats.
 - See [../docs/theme-codes.md](../docs/theme-codes.md) for the format analysis.
 
 ## token/

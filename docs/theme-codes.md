@@ -99,13 +99,13 @@ Binary uses a flat array of 24-bit integers in a fixed order.
 
 ## Reference JS Code
 
-The reference `parsers`/`stringifiers` in `reference.js` include v0 and a
+The reference `parsers`/`stringifiers` in `theme.js` include v0 and a
 different v1 (with `lavender` at index 4, overwriting `aqua`). The
 open-source-arras client (`app.js:867–983`) has the canonical v0 parser
-with `aqua` at index 4. The `reference.js` code is OLDER and uses a
+with `aqua` at index 4. The `theme.js` code is OLDER and uses a
 different palette order for its v0 parser:
 
-Old v0 order (reference.js):
+Old v0 order (theme.js):
   [0] teal [1] lgreen [2] orange [3] yellow [4]=teal(overwrite) [5] pink
   [6] vlgrey [7]=grey(overwrite) [8] guiwhite [9] black ...
 
