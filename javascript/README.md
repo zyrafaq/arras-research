@@ -4,7 +4,7 @@ JS bits for arras.io.
 
 > **Recent update:** servers now send a Cloudflare Turnstile challenge before
 > you can spawn. The `js-client` does not implement it, so it does not work
-> right now.
+> right now. It is also still work in progress.
 
 ## theme-codes/
 
