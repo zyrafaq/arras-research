@@ -3,11 +3,6 @@
 My arras.io reverse engineering work. Notes, protocol implementations, and
 tools I built while picking the game apart.
 
-Nothing here is official. Everything came from studying the original client
-and watching the live servers. The Python side is a library that speaks the
-game's binary wire protocol, and the JavaScript side is the same work plus
-the tools I needed along the way.
-
 ## Structure
 
 ```
