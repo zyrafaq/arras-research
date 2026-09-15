@@ -139,6 +139,7 @@ def to_json_dict(theme):
         'content': content,
         'paletteSize': len(table),
         'border': theme['blend'],
+        'neon': theme.get('neon', False),
     }
 
 def from_json_dict(d):
