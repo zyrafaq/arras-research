@@ -1,7 +1,6 @@
 # arras-research
 
-My arras.io reverse engineering work. Notes, protocol implementations, and
-tools I built while picking the game apart.
+My [arras.io](https://arras.io) reverse engineering work.
 
 ## Structure
 
