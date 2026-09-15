@@ -38,3 +38,7 @@ def main(argv=None):
     else:
         print(_format_human(token))
     return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

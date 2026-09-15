@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import sys
@@ -7,14 +8,6 @@ from .converter import (
     to_json_dict,
 )
 
-USAGE = """\
-arras.io theme converter
-
-Usage:
-  python3 -m arras.theme decode <theme_code>
-  python3 -m arras.theme encode <json_or_file> [--name N] [--author A] [--blend B] [--neon]
-  python3 -m arras.theme roundtrip <theme_code>
-"""
 
 def print_color_table(theme):
     table = theme['table']
@@ -22,6 +15,7 @@ def print_color_table(theme):
         name = COLOR_NAMES[i] if i < len(COLOR_NAMES) else f'idx_{i}'
         r, g, b = int_to_rgb(c)
         print(f'  [{i:2d}] {name:10s} = #{r:02x}{g:02x}{b:02x}  ({c})')
+
 
 def cmd_decode(code):
     theme, fmt = decode(code)
@@ -32,6 +26,7 @@ def cmd_decode(code):
     print()
     print('JSON:')
     print(json.dumps(to_json_dict(theme), indent=2))
+
 
 def cmd_encode(json_input, name=None, author=None, blend=None, neon=False):
     if os.path.isfile(json_input):
@@ -56,6 +51,7 @@ def cmd_encode(json_input, name=None, author=None, blend=None, neon=False):
     print()
     print(f'Summary: {theme_summary(theme)}')
 
+
 def cmd_roundtrip(code):
     theme1, fmt = decode(code)
     code2 = encode_v1(theme1)
@@ -68,47 +64,51 @@ def cmd_roundtrip(code):
     print()
     print_color_table(theme2)
 
-def main():
-    if len(sys.argv) < 2:
-        print(USAGE.strip())
-        sys.exit(1)
 
-    cmd = sys.argv[1]
+def build_parser():
+    parser = argparse.ArgumentParser(
+        prog='arras.theme',
+        description='arras.io theme code converter.')
+    sub = parser.add_subparsers(dest='command', metavar='command')
 
-    if cmd == 'decode':
-        if len(sys.argv) < 3:
-            print('Usage: python3 -m arras.theme decode <theme_code>')
-            sys.exit(1)
-        cmd_decode(sys.argv[2])
+    p = sub.add_parser('decode', aliases=['decrypt'],
+                       help='decode a theme code to JSON')
+    p.add_argument('code', help='theme code (arras/...) or raw base64')
 
-    elif cmd == 'encode':
-        if len(sys.argv) < 3:
-            print('Usage: python3 -m arras.theme encode <json_or_file> [--name N] [--author A] [--blend B] [--neon]')
-            sys.exit(1)
-        json_input = sys.argv[2]
-        name = author = blend = None
-        neon = False
-        i = 3
-        while i < len(sys.argv):
-            if sys.argv[i] == '--name' and i + 1 < len(sys.argv):
-                name = sys.argv[i + 1]; i += 2
-            elif sys.argv[i] == '--author' and i + 1 < len(sys.argv):
-                author = sys.argv[i + 1]; i += 2
-            elif sys.argv[i] == '--blend' and i + 1 < len(sys.argv):
-                blend = sys.argv[i + 1]; i += 2
-            elif sys.argv[i] == '--neon':
-                neon = True; i += 1
-            else:
-                i += 1
-        cmd_encode(json_input, name=name, author=author, blend=blend, neon=neon)
+    p = sub.add_parser('encode', help='encode theme JSON to a v1 code')
+    p.add_argument('input', help='JSON string or path to a JSON file')
+    p.add_argument('--name', help='override the theme name')
+    p.add_argument('--author', help='override the author')
+    p.add_argument('--blend', type=float, help='border blend, 0..1')
+    p.add_argument('--neon', action='store_true', help='enable neon')
 
-    elif cmd == 'roundtrip':
-        if len(sys.argv) < 3:
-            print('Usage: python3 -m arras.theme roundtrip <theme_code>')
-            sys.exit(1)
-        cmd_roundtrip(sys.argv[2])
+    p = sub.add_parser('roundtrip', help='decode then re-encode a theme code')
+    p.add_argument('code', help='theme code (arras/...) or raw base64')
 
-    else:
-        print(f'Unknown command: {cmd}')
-        print(USAGE.strip())
-        sys.exit(1)
+    return parser
+
+
+def main(argv=None):
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    if args.command is None:
+        parser.print_help()
+        return 1
+
+    try:
+        if args.command in ('decode', 'decrypt'):
+            cmd_decode(args.code)
+        elif args.command == 'encode':
+            cmd_encode(args.input, name=args.name, author=args.author,
+                       blend=args.blend, neon=args.neon)
+        elif args.command == 'roundtrip':
+            cmd_roundtrip(args.code)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        print(f'error: {exc}', file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
