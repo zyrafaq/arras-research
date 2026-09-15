@@ -17,8 +17,11 @@ def print_color_table(theme):
         print(f'  [{i:2d}] {name:10s} = #{r:02x}{g:02x}{b:02x}  ({c})')
 
 
-def cmd_decode(code):
+def cmd_decode(code, as_json=False):
     theme, fmt = decode(code)
+    if as_json:
+        print(json.dumps(to_json_dict(theme), indent=2))
+        return
     print(f'Format: {fmt}')
     print(f'Summary: {theme_summary(theme)}')
     print()
@@ -74,6 +77,8 @@ def build_parser():
     p = sub.add_parser('decode', aliases=['decrypt'],
                        help='decode a theme code to JSON')
     p.add_argument('code', help='theme code (arras/...) or raw base64')
+    p.add_argument('--json', action='store_true',
+                   help='print only the theme JSON')
 
     p = sub.add_parser('encode', help='encode theme JSON to a v1 code')
     p.add_argument('input', help='JSON string or path to a JSON file')
@@ -98,7 +103,7 @@ def main(argv=None):
 
     try:
         if args.command in ('decode', 'decrypt'):
-            cmd_decode(args.code)
+            cmd_decode(args.code, as_json=args.json)
         elif args.command == 'encode':
             cmd_encode(args.input, name=args.name, author=args.author,
                        blend=args.blend, neon=args.neon)
