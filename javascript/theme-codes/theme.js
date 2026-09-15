@@ -1,7 +1,7 @@
 "use strict";
 
 const PALETTE_KEYS = [
-  "teal", "lgreen", "orange", "yellow", "lavender", "pink",
+  "teal", "lgreen", "orange", "yellow", "aqua", "pink",
   "vlgrey", "lgrey", "guiwhite", "black",
   "blue", "green", "red", "gold", "purple", "magenta",
   "grey", "dgrey", "white", "guiblack",
