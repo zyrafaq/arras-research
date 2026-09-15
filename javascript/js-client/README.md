@@ -1,5 +1,9 @@
 # js-client
 
+> **Status: currently broken.** A recent server update adds a Cloudflare
+> Turnstile challenge before spawning. This client has no Turnstile support,
+> so connecting to live servers stops at the challenge.
+
 A browser client for the original arras.io servers. It speaks the real wire
 protocol (status list, websocket upgrade, X25519 exchange, ChaCha20 packets
 with the SHA-256 trailer) and draws the game on a canvas.

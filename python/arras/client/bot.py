@@ -161,7 +161,11 @@ class ArrasBot:
 
     def answer_turnstile(self, site_id, session_token):
         if self.turnstile_handler is None:
-            log.warning("== turnstile challenge received but no turnstile_handler is set")
+            log.warning(
+                "== turnstile challenge received: the server requires a "
+                "Cloudflare Turnstile token, so the bot cannot spawn. "
+                "Provide a turnstile_handler when creating the bot; solving "
+                "the captcha itself is out of scope for this repository")
             return
         try:
             token = self.turnstile_handler(site_id, session_token)
