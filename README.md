@@ -1,6 +1,6 @@
 # arras-research
 
-My [arras.io](https://arras.io) reverse engineering work.
+My [arras.io](https://arras.io) reverse engineering work, with full packet decoding, packet parsers, and a python client library.
 
 ## Structure
 
