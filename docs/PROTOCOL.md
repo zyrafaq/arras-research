@@ -437,9 +437,11 @@ value = n    -> set points to n
 ```js
 ["C", x /*i*/, y /*i*/, action /*u*/]
 
-(x, y)  world-space point the tank aims/moves toward
-action  bitmask: up=1<<0 down=1<<1 left=1<<2 right=1<<3 lmb=1<<4 rmb=1<<6
-        (bit 5 unused)
+(x, y)  offset from the tank's OWN body to the aim point (relative, not
+        world-space); the client sends mouse_world - body
+action  bitmask: up=1<<0 down=1<<1 left=1<<2 right=1<<3 lmb=1<<4 mmb=1<<5 rmb=1<<6
+        bit 5 is the tertiary control: keybinds.control_1 in the Nov-2026 build,
+        hinted as "defaulting to X ... also accessed with the middle mouse button"
 ```
 
 Movement keys emulate WASD; `lmb` fires toward `(x,y)`. The Python bot derives
