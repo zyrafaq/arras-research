@@ -42,7 +42,6 @@
     "game": {
         "render_grid": "bool",
         "shieldbars": "bool",
-        "miter": "bool",
         "miter_stars": "bool",
         "quadratic_stars": "bool",
         "border_thickness": "float64",
@@ -51,7 +50,8 @@
         "render_scores": "bool",
         "render_chat": "bool",
         "render_skins": "bool",
-        "censor": "int",
+        "censor_chat": "int",
+        "no_censor_chat": "bool",
         "alpha_animations": "bool"
     },
     "secrets": {
@@ -59,7 +59,6 @@
         "unlocked_super": "bool",
         "crosshair": "bool",
         "rainbow_player_teams": "bool",
-        "uncapped_frame_rate": "bool",
         "copy_captures": "bool",
         "force_aspect_ratio": "bool",
         "self_centered_minimap": "bool",
@@ -68,11 +67,19 @@
         "localhost": "bool",
         "skill_save": "bool",
         "player_list": "bool",
-        "legacy_themes": "bool"
+        "render_old_nest": "bool",
+        "wireframes": "bool",
+        "alpha_large": "bool",
+        "all_servers": "bool",
+        "debug_hitboxes": "bool",
+        "keyboard_display": "bool",
+        "beta": "bool",
+        "debug_boxes": "bool",
+        "legacy_unscaled_spawn_panel": "bool",
+        "server_uptime": "bool"
     },
     "ui": {
         "size": "int",
-        "unscaled_legacy_spawn_panel": "bool",
         "upgrades": "bool",
         "minimap": "bool",
         "leaderboard": "bool",
@@ -83,10 +90,12 @@
     "performance": {
         "smooth_camera": "bool",
         "renderer": "int",
-        "low_graphics": "bool"
+        "resolution": "int",
+        "frame_rate": "int"
     },
     "extra": {
         "auto_max": "bool",
+        "auto_reconnect": "bool",
         "incognito": "bool"
     },
     "keybinds": {
@@ -95,7 +104,9 @@
         "movement_down": "string",
         "movement_right": "string",
         "control_0": "string",
+        "control_1": "string",
         "control_2": "string",
+        "scope": "string",
         "toggle_autofire": "string",
         "toggle_autospin": "string",
         "toggle_override": "string",
@@ -109,6 +120,7 @@
         "upgrade_class_0": "string",
         "upgrade_class_1": "string",
         "upgrade_class_2": "string",
+        "upgrade_class_3": "string",
         "upgrade_class_4": "string",
         "upgrade_class_5": "string",
         "upgrade_class_6": "string",
