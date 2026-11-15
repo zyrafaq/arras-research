@@ -5,8 +5,11 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 
 _ID_OFFSET = 0
+_NONCE_OFFSET = 8
 _EXPIRY_OFFSET = 16
+_TAG_OFFSET = 24
 _MIN_BYTES = _EXPIRY_OFFSET + 8
+_FULL_BYTES = _TAG_OFFSET + 12
 _MICROS_PER_SECOND = 1_000_000
 
 class TokenFormatError(ValueError):
@@ -27,17 +30,24 @@ def _decode_base64(text):
 class PlayerToken:
     user_id: int
     expires_at: datetime
+    nonce: str = ""
+    tag: str = ""
 
     @property
     def expired(self):
         return datetime.now(timezone.utc) >= self.expires_at
 
     def as_dict(self):
-        return {
+        info = {
             "user_id": str(self.user_id),
             "expires_at": self.expires_at.isoformat(),
             "expired": self.expired,
         }
+        if self.nonce:
+            info["nonce"] = self.nonce
+        if self.tag:
+            info["tag"] = self.tag
+        return info
 
     @classmethod
     def decode(cls, token):
@@ -52,4 +62,6 @@ class PlayerToken:
                 expiry_micros / _MICROS_PER_SECOND, tz=timezone.utc)
         except (OverflowError, OSError, ValueError) as exc:
             raise TokenFormatError("expiry field is out of range") from exc
-        return cls(user_id, expires_at)
+        nonce = raw[_NONCE_OFFSET:_EXPIRY_OFFSET].hex()
+        tag = raw[_TAG_OFFSET:_FULL_BYTES].hex() if len(raw) >= _FULL_BYTES else ""
+        return cls(user_id, expires_at, nonce, tag)

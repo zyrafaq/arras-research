@@ -6,11 +6,16 @@ from .player import PlayerToken, TokenFormatError
 
 def _format_human(token):
     stamp = token.expires_at.strftime("%Y-%m-%d %H:%M:%S %Z")
-    return "\n".join([
+    lines = [
         f"discord id : {token.user_id}",
         f"expires    : {stamp}",
         f"status     : {'expired' if token.expired else 'valid'}",
-    ])
+    ]
+    if token.nonce:
+        lines.append(f"field 8-15 : {token.nonce}")
+    if token.tag:
+        lines.append(f"field 24-35: {token.tag}")
+    return "\n".join(lines)
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
