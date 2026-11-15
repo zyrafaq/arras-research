@@ -56,7 +56,7 @@
     },
     "secrets": {
         "unlocked": "bool",
-        "unlocked_full": "bool",
+        "unlocked_super": "bool",
         "crosshair": "bool",
         "rainbow_player_teams": "bool",
         "uncapped_frame_rate": "bool",
