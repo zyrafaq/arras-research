@@ -20,6 +20,16 @@ Small CLI that decodes an arras.io player token (linked Discord id + expiry).
 
 - `index.js` — no-dependency decoder (`node index.js <token>`).
 
+## save-codes/
+
+Decoder for arras.io save (score) codes
+`(checksum:server:mode:tank:build:score:r1:r2:r3:r4:r5:r6:timestamp:signature)`.
+
+- `savecodes.js` — `parseSaveCode`.
+- `index.js` — `decode` CLI.
+- See [../docs/save-codes.md](../docs/save-codes.md) for the format and the
+  Discord `$claim` / `$scores` / `#restore` workflow.
+
 ## localstorage/
 
 Encoder/decoder for the encrypted `localStorage["arras.io"]` settings blob.

@@ -89,15 +89,14 @@ Notes:
 | Language | Location | Library | CLI |
 |----------|----------|---------|-----|
 | Python | `python/arras/savecodes/` | `arras.savecodes.parse(code) -> SaveCode`, `SaveCode.to_dict()`, `format_savecode(d)` | `python3 -m arras.savecodes decode|explain <code> [--json]` |
-| JavaScript | `javascript/save-codes/` | `parseSaveCode(code) -> { save, format }`, `stringifySaveCode(save)`, `saveToJson(save)` | `node index.js decode|roundtrip <code>` |
+| JavaScript | `javascript/save-codes/` | `parseSaveCode(code) -> save object` | `node index.js decode <code> [--json]` |
 
-Both parsers implement the same grammar (§2), produce the same JSON keys
-(`checksum`, `server_id`, `mode`, `mode_display`, `tank`, `build`, `score`,
-`reserved`, `timestamp`, `created_at`, `signature`), and reject the same
-malformed inputs. Two display-only differences: Python fills `mode_display`
-via `arras.modes` while JS leaves it `null`, and `created_at` formatting may
-differ in offset style (`+00:00` vs `Z`) — the canonical value is the integer
-`timestamp`. Neither verifies `checksum`/`signature` cryptographically
+Both parsers implement the same grammar (§2) and reject the same malformed
+inputs. The JavaScript side is decode-only — a code is signed by the server, so
+there is nothing useful to encode — and returns the fields directly with no
+`mode_display`; Python fills that in via `arras.modes`. `created_at` formatting
+may differ in offset style (`+00:00` vs `Z`) — the canonical value is the
+integer `timestamp`. Neither verifies `checksum`/`signature` cryptographically
 (algorithms unknown) — they validate shape only.
 
 ## 4. References
