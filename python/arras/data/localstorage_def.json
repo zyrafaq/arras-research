@@ -39,6 +39,7 @@
             "19": "int"
         }
     },
+    "background_image": "string",
     "game": {
         "render_grid": "bool",
         "shieldbars": "bool",
